@@ -4,6 +4,7 @@ import com.Ausy_Technologies.employee_management.Model.DAO.Department;
 import com.Ausy_Technologies.employee_management.Model.DAO.Employee;
 import com.Ausy_Technologies.employee_management.Model.DAO.JobCategory;
 import com.Ausy_Technologies.employee_management.Model.DTO.EmployeeDto;
+import com.Ausy_Technologies.employee_management.RestErrorHandling.CustomException;
 import com.Ausy_Technologies.employee_management.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/employees")
 public class EmployeeController {
 
     @Autowired
@@ -27,17 +28,17 @@ public class EmployeeController {
         Employee employeeAdded = this.employeeService.saveEmployee(employee);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "addEmployee");
-        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(employeeAdded);
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeAdded);
     }
 
-    @PostMapping("/addEmployeeDJc/{idDepartment}/{idJobCategory}")
+    @PostMapping("/addEmployee/{idDepartment}/{idJobCategory}")
     public ResponseEntity<Employee> saveEmployeeDJc(@RequestBody Employee employee, @PathVariable int idDepartment,
                                                     @PathVariable int idJobCategory)
     {
         Employee employeeAdded = this.employeeService.saveEmployeeDJc(employee, idDepartment, idJobCategory);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "addEmployeeDJC");
-        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(employeeAdded);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(httpHeaders).body(employeeAdded);
 
     }
 
@@ -51,22 +52,28 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.employeeService.findEmployeeById(id));
     }
 
-    @GetMapping("/findAllEmployees")
+    @GetMapping("/getAllEmployee")
     public ResponseEntity<List<Employee>> findAllEmployees()
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findAllEmployees");
-        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.employeeService.findAllEmployees());
+        List<Employee> departmentsList = this.employeeService.findAllEmployees();
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(this.employeeService.findAllEmployees());
     }
 
 
-    @DeleteMapping("/deleteEmployeeById/{id}")
+    @DeleteMapping("/deleteEmployee/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "deleteEmployee");
-        this.employeeService.deleteEmployeeById(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(httpHeaders).body("Delete successful");
+        try {
+            this.employeeService.deleteEmployeeById(id);
+        } catch (CustomException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("Not found!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body("Deleted!");
 
     }
 
@@ -91,13 +98,13 @@ public class EmployeeController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "updateEmployee");
-        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(httpHeaders).body(this.employeeService.
+        return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(this.employeeService.
                 updateEmployee(employee,id));
     }
 
 
-    @GetMapping("/findEmployeeDtoBy/{id}")
-    public ResponseEntity<EmployeeDto> findEmployeeDtoById(@PathVariable int id){
+    @GetMapping("/getEmployeeDTO")
+    public ResponseEntity<EmployeeDto> findEmployeeDtoById(@RequestParam int id){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeeDto");
@@ -105,11 +112,41 @@ public class EmployeeController {
 
     }
 
-    @GetMapping("/findAllEmployeesDto")
+    @GetMapping("/getAllEmployeesDTO")
     public ResponseEntity<List<EmployeeDto>> findAllEmployeesDto()
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findAllEmployeesDto");
-        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.employeeService.findAllEmployeesDto());
+        List<EmployeeDto> employeeDtoList = this.employeeService.findAllEmployeesDto();
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDtoList);
+    }
+
+    @GetMapping("/getEmployeesByDep")
+    public ResponseEntity<List<EmployeeDto>> findEmployeesByDep(@RequestParam int departmentid){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "findEmployeesByDepartment");
+        List<EmployeeDto> employeesList = this.employeeService.findEmployeesByDep(departmentid);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
+    }
+
+    @GetMapping("/getEmployeesByJob")
+    public ResponseEntity<List<EmployeeDto>> findEmployeesByJob(@RequestParam int jobid){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "findEmployeesByJobCategory");
+        List<EmployeeDto> employeesList = this.employeeService.findEmployeesByJob(jobid);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
+    }
+
+    @GetMapping("/getEmployeesDTOByDepAndJob/{departmentId}/{jobCategoryId}")
+    public ResponseEntity<List<EmployeeDto>> findEmployeesByDepAndJob(@PathVariable int departmentId,
+                                                                      @PathVariable int jobCategoryId){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "findEmployeesByDepartmentAndJob");
+        List<EmployeeDto> employeesList = this.employeeService.findEmployeesByDepAndJob(departmentId, jobCategoryId);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
     }
 }

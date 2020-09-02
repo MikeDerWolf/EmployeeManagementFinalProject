@@ -15,9 +15,9 @@ public class EmployeeDto {
     private boolean isManager;
     private boolean active;
 
-    public int getId() {
+    /*public int getId() {
         return id;
-    }
+    }*/
 
     public void setId(int id) {
         this.id = id;

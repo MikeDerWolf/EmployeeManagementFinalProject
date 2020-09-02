@@ -20,11 +20,11 @@ public class Employee {
     @Column
     private String lastName;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jobCategoryId")
     private JobCategory jobCategory;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "departmentId")
     private Department department;
 
@@ -50,9 +50,9 @@ public class Employee {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate birthday;
     @Column(name = "noChildren")
-    private int noChildren = 0;
+    private Integer noChildren = 0;
     @Column(name = "salary")
-    private double salary;
+    private Double salary;
     @Column(name = "studies")
     private String studies = "";
     @Column(name = "socialSecurityNumber")
@@ -173,19 +173,19 @@ public class Employee {
         this.birthday = birthday;
     }
 
-    public int getNoChildren() {
+    public Integer getNoChildren() {
         return noChildren;
     }
 
-    public void setNoChildren(int noChildren) {
+    public void setNoChildren(Integer noChildren) {
         this.noChildren = noChildren;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
