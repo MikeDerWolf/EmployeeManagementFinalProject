@@ -5,6 +5,7 @@ import com.Ausy_Technologies.employee_management.Model.DAO.Employee;
 import com.Ausy_Technologies.employee_management.Repository.DepartmentRepository;
 import com.Ausy_Technologies.employee_management.Repository.EmployeeRepository;
 import com.Ausy_Technologies.employee_management.Repository.JobCategoryRepository;
+import com.Ausy_Technologies.employee_management.RestErrorHandling.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,13 +28,21 @@ public class DepartmentService {
 
     public Department saveDepartment(Department department) {
 
+        if(department.getName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Incorrect value!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+
         return this.departmentRepository.save(department);
     }
 
     public Department findDepartmentById(int id)
     {
         if(!this.departmentRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         return this.departmentRepository.findById(id).get();
 
@@ -42,31 +51,27 @@ public class DepartmentService {
     public List<Department> findAllDepartments()
     {
         List<Department> departmentsList = this.departmentRepository.findAll();
-        if(departmentsList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Content not found!");
-        }
         return departmentsList;
     }
 
     public List<Employee> listEmployeesInDepartment(int id){
         if(!this.departmentRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         List<Employee> employeeList = this.departmentRepository.findById(id).get().getEmployees();
-        if(employeeList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No employees in department!");
-        }
         return employeeList;
     }
 
     public void deleteDepartmentById(int id){
 
         if(!this.departmentRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
-        if(!this.departmentRepository.findById(id).get().getEmployees().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Department has employees!");
-        }
+
         this.departmentRepository.deleteById(id);
     }
 
@@ -75,7 +80,14 @@ public class DepartmentService {
         Optional<Department> optionalDepartment = this.departmentRepository.findById(id);
 
         if(!optionalDepartment.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
+        }
+        if(name.isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Incorrect value!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
         }
 
         Department existingDepartment = optionalDepartment.get();

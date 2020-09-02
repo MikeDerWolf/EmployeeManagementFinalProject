@@ -2,6 +2,7 @@ package com.Ausy_Technologies.employee_management.Controller;
 
 import com.Ausy_Technologies.employee_management.Model.DAO.Department;
 import com.Ausy_Technologies.employee_management.Model.DAO.Employee;
+import com.Ausy_Technologies.employee_management.RestErrorHandling.CustomException;
 import com.Ausy_Technologies.employee_management.Service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
@@ -28,11 +29,12 @@ public class DepartmentController {
     }
 
 
-    @GetMapping("/findDepartmentBy/{id}")
-    public ResponseEntity<Department> findDepartmentById(@PathVariable int id)
+    @GetMapping("/findDepartment")
+    public ResponseEntity<Department> findDepartmentById(@RequestParam int id)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findDepartment");
+
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.departmentService.findDepartmentById(id));
     }
 
@@ -41,32 +43,40 @@ public class DepartmentController {
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findAllDepartments");
-        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.departmentService.findAllDepartments());
+        List<Department> departmentsList = this.departmentService.findAllDepartments();
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(departmentsList);
     }
 
-    @GetMapping("/listEmployeesInDepartment/{idDepartment}")
-    public ResponseEntity<List<Employee>> listEmployeesInDepartment(@PathVariable int idDepartment)
+    @GetMapping("/listEmployeesInDepartment")
+    public ResponseEntity<List<Employee>> listEmployeesInDepartment(@RequestParam int idDepartment)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesInDepartment");
-        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.departmentService.listEmployeesInDepartment(idDepartment));
+
+        List<Employee> employeesList = this.departmentService.listEmployeesInDepartment(idDepartment);
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
     }
 
-    @DeleteMapping("/deleteDepartmentById/{id}")
-    public ResponseEntity<String> deleteDepartment(@PathVariable int id){
+    @DeleteMapping("/deleteDepartment")
+    public ResponseEntity<String> deleteDepartment(@RequestParam int id){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "deleteDepartment");
-        this.departmentService.deleteDepartmentById(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(httpHeaders).body("Delete successful");
+        try {
+            this.departmentService.deleteDepartmentById(id);
+        } catch (CustomException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("No value present!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body("Department deleted!");
     }
 
 
-    @PutMapping("updateDepartment/{id}/{name}")
-    public ResponseEntity<Department> updateDepartment(@PathVariable int id, @PathVariable String name){
+    @PutMapping("/updateDepartment")
+    public ResponseEntity<Department> updateDepartment(@RequestParam int id, @RequestParam String name){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "updateDepartment");
-        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(httpHeaders).body(this.departmentService.updateDepartment(id, name));
+        return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(this.departmentService.updateDepartment(id, name));
     }
 }

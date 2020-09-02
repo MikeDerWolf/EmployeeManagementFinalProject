@@ -7,6 +7,7 @@ import com.Ausy_Technologies.employee_management.Model.DTO.EmployeeDto;
 import com.Ausy_Technologies.employee_management.Repository.DepartmentRepository;
 import com.Ausy_Technologies.employee_management.Repository.EmployeeRepository;
 import com.Ausy_Technologies.employee_management.Repository.JobCategoryRepository;
+import com.Ausy_Technologies.employee_management.RestErrorHandling.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -34,6 +35,64 @@ public class EmployeeService {
 
 
     public Employee saveEmployee(Employee employee){
+        if(employee.getDepartment()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing department!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        } else if(!this.departmentRepository.findById(employee.getDepartment().getId()).isPresent()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Department doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getJobCategory()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing job category!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        } else if(!this.jobCategoryRepository.findById(employee.getJobCategory().getId()).isPresent()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Job category doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getFirstName()==null||employee.getFirstName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing first name!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getLastName()==null||employee.getLastName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing last name!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getStartDate()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing start date!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getAddress()==null||employee.getAddress().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing address!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getZipcode()==null||employee.getZipcode().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing zipcode!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getTelephone()==null||employee.getTelephone().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing telephone!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getBirthday()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing birthday!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getSalary()==null||employee.getSalary()<0){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing correct salary!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
 
         return this.employeeRepository.save(employee);
     }
@@ -45,26 +104,74 @@ public class EmployeeService {
         Optional<JobCategory> optJobCategory = this.jobCategoryRepository.findById(idJobCategory);
 
         if(!optDepartment.isPresent()&&!optJobCategory.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department and job category not found!");
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Department and job category don't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
         }
         else if(!optJobCategory.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Job category doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
         } else if(!optDepartment.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Department doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
         }
-        else
-        {
-            employee.setJobCategory(optJobCategory.get());
-            employee.setDepartment(optDepartment.get());
-            return this.employeeRepository.save(employee);
+
+        if(employee.getFirstName()==null||employee.getFirstName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing first name!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
         }
+        if(employee.getLastName()==null||employee.getLastName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing last name!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getStartDate()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing start date!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getAddress()==null||employee.getAddress().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing address!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getZipcode()==null||employee.getZipcode().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing zipcode!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getTelephone()==null||employee.getTelephone().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing telephone!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getBirthday()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing birthday!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getSalary()==null||employee.getSalary()<0){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing correct salary!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+
+        employee.setJobCategory(optJobCategory.get());
+        employee.setDepartment(optDepartment.get());
+        return this.employeeRepository.save(employee);
+
     }
 
 
     public Employee findEmployeeById(int id) {
 
         if(!this.employeeRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         return this.employeeRepository.findById(id).get();
     }
@@ -73,9 +180,6 @@ public class EmployeeService {
     public List<Employee> findAllEmployees()
     {
         List<Employee> employeeList = this.employeeRepository.findAll();
-        if(employeeList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Content not found!");
-        }
         return employeeList;
     }
 
@@ -83,7 +187,9 @@ public class EmployeeService {
     public void deleteEmployeeById(int id){
 
         if(!this.employeeRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         this.employeeRepository.deleteById(id);
     }
@@ -91,10 +197,14 @@ public class EmployeeService {
 
     public Employee changeDepartment(int idEmployee, int idDepartment){
         if(!this.employeeRepository.findById(idEmployee).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         if(!this.departmentRepository.findById(idDepartment).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Department not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         Employee existingEmployee = this.employeeRepository.findById(idEmployee).get();
         Department existingDepartment = this.departmentRepository.findById(idDepartment).get();
@@ -104,10 +214,14 @@ public class EmployeeService {
 
     public Employee changeJobCategory(int idEmployee, int idJobCategory){
         if(!this.employeeRepository.findById(idEmployee).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         if(!this.jobCategoryRepository.findById(idJobCategory).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         Employee existingEmployee = this.employeeRepository.findById(idEmployee).get();
         JobCategory existingJobCategory = this.jobCategoryRepository.findById(idJobCategory).get();
@@ -120,7 +234,67 @@ public class EmployeeService {
         Optional<Employee> optionalEmployee = this.employeeRepository.findById(id);
 
         if(!optionalEmployee.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
+        }
+        if(employee.getDepartment()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing department!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        } else if(!this.departmentRepository.findById(employee.getDepartment().getId()).isPresent()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Department doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getJobCategory()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing job category!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        } else if(!this.jobCategoryRepository.findById(employee.getJobCategory().getId()).isPresent()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Job category doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getFirstName()==null||employee.getFirstName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing first name!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getLastName()==null||employee.getLastName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing last name!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getStartDate()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing start date!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getAddress()==null||employee.getAddress().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing address!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getZipcode()==null||employee.getZipcode().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing zipcode!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getTelephone()==null||employee.getTelephone().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing telephone!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getBirthday()==null){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing birthday!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(employee.getSalary()==null||employee.getSalary()<0){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Missing correct salary!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
         }
 
         Employee existingEmployee = optionalEmployee.get();
@@ -128,6 +302,8 @@ public class EmployeeService {
 
         existingEmployee.setFirstName(employee.getFirstName());
         existingEmployee.setLastName(employee.getLastName());
+        existingEmployee.setDepartment(this.departmentRepository.findById(employee.getDepartment().getId()).get());
+        existingEmployee.setJobCategory(this.jobCategoryRepository.findById(employee.getJobCategory().getId()).get());
         existingEmployee.setManager(employee.isManager());
         existingEmployee.setStartDate(employee.getStartDate());
         existingEmployee.setEndDate(employee.getEndDate());
@@ -169,7 +345,9 @@ public class EmployeeService {
         Optional<Employee> optionalEmployee = this.employeeRepository.findById(id);
 
         if(!optionalEmployee.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "EmployeeDTO not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
 
         Employee employee = optionalEmployee.get();
@@ -181,9 +359,15 @@ public class EmployeeService {
 
         List<Employee> employeeList = this.employeeRepository.findAll();
 
-        if(employeeList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Content not found!");
-        }
+        List<EmployeeDto> employeeDtoList = employeeList.stream().map(e->convertEmployeeToDto(e)).
+                collect(Collectors.toList());
+
+        return employeeDtoList;
+    }
+
+    public List<EmployeeDto> findEmployeesByDep(int departmentId){
+        List<Employee> employeeList = this.employeeRepository.findAll().stream().filter(e -> e.getDepartment().getId() == departmentId).
+                collect(Collectors.toList());;
 
         List<EmployeeDto> employeeDtoList = employeeList.stream().map(e->convertEmployeeToDto(e)).
                 collect(Collectors.toList());
@@ -191,4 +375,24 @@ public class EmployeeService {
         return employeeDtoList;
     }
 
+    public List<EmployeeDto> findEmployeesByJob(int jobCategoryId){
+        List<Employee> employeeList = this.employeeRepository.findAll().stream().filter(e -> e.getJobCategory().getId() == jobCategoryId).
+                collect(Collectors.toList());;
+
+        List<EmployeeDto> employeeDtoList = employeeList.stream().map(e->convertEmployeeToDto(e)).
+                collect(Collectors.toList());
+
+        return employeeDtoList;
+    }
+
+    public List<EmployeeDto> findEmployeesByDepAndJob(int departmentId, int jobCategoryId){
+        List<Employee> employeeList = this.employeeRepository.findAll().stream().filter(e -> e.getDepartment().getId() == departmentId
+        && e.getJobCategory().getId() == jobCategoryId).
+                collect(Collectors.toList());;
+
+        List<EmployeeDto> employeeDtoList = employeeList.stream().map(e->convertEmployeeToDto(e)).
+                collect(Collectors.toList());
+
+        return employeeDtoList;
+    }
 }

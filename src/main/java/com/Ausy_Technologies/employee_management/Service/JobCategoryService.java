@@ -6,6 +6,7 @@ import com.Ausy_Technologies.employee_management.Model.DAO.JobCategory;
 import com.Ausy_Technologies.employee_management.Repository.DepartmentRepository;
 import com.Ausy_Technologies.employee_management.Repository.EmployeeRepository;
 import com.Ausy_Technologies.employee_management.Repository.JobCategoryRepository;
+import com.Ausy_Technologies.employee_management.RestErrorHandling.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
 @Service
 public class JobCategoryService {
@@ -27,13 +29,21 @@ public class JobCategoryService {
 
     public JobCategory saveJobCategory(JobCategory jobCategory) {
 
+        if(jobCategory.getName().isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Incorrect value!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+
         return this.jobCategoryRepository.save(jobCategory);
     }
 
     public JobCategory findJobCategoryById(int id)
     {
         if(!this.jobCategoryRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         return this.jobCategoryRepository.findById(id).get();
 
@@ -42,31 +52,27 @@ public class JobCategoryService {
     public List<JobCategory> findAllJobCategories()
     {
         List<JobCategory> jobCategoriesList = this.jobCategoryRepository.findAll();
-        if(jobCategoriesList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Content not found!");
-        }
         return jobCategoriesList;
     }
 
     public List<Employee> listEmployeesInJobCategory(int id){
         if(!this.jobCategoryRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
         List<Employee> employeeList = this.jobCategoryRepository.findById(id).get().getEmployees();
-        if(employeeList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No employees in job category!");
-        }
         return employeeList;
     }
 
     public void deleteJobCategoryById(int id){
 
         if(!this.jobCategoryRepository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
         }
-        if(!this.jobCategoryRepository.findById(id).get().getEmployees().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Job category has employees!");
-        }
+
         this.jobCategoryRepository.deleteById(id);
     }
 
@@ -75,7 +81,14 @@ public class JobCategoryService {
         Optional<JobCategory> optionalJobCategory = this.jobCategoryRepository.findById(id);
 
         if(!optionalJobCategory.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Job category not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
+        }
+        if(name.isEmpty()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Incorrect value!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
         }
 
         JobCategory existingJobCategory = optionalJobCategory.get();
