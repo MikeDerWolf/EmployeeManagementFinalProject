@@ -44,7 +44,7 @@ public class EmployeeController {
 
 
 
-    @GetMapping("/findEmployeeBy/{id}")
+    @GetMapping("/getEmployee/{id}")
     public ResponseEntity<Employee> findEmployeeById(@PathVariable int id)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -52,7 +52,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.employeeService.findEmployeeById(id));
     }
 
-    @GetMapping("/getAllEmployee")
+    @GetMapping("/getAllEmployees")
     public ResponseEntity<List<Employee>> findAllEmployees()
     {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -93,6 +93,15 @@ public class EmployeeController {
                 changeJobCategory(idEmployee, idJobCategory));
     }
 
+    @PutMapping("updateEmployee/{idEmployee}/{idDepartment}/{idJobCategory}")
+    public ResponseEntity<Employee> updateEmployee2(@PathVariable int idEmployee, @PathVariable int idDepartment,
+                                                    @PathVariable int idJobCategory){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "updateEmployeeDepartmentAndJob");
+        return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(this.employeeService.
+                updateEmployee2(idEmployee, idDepartment, idJobCategory));
+    }
+
     @PutMapping("updateEmployee/{id}")
     public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee, @PathVariable int id){
 
@@ -103,8 +112,8 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/getEmployeeDTO")
-    public ResponseEntity<EmployeeDto> findEmployeeDtoById(@RequestParam int id){
+    @GetMapping("/getEmployeeDTO/{id}")
+    public ResponseEntity<EmployeeDto> findEmployeeDtoById(@PathVariable int id){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeeDto");
@@ -122,25 +131,25 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDtoList);
     }
 
-    @GetMapping("/getEmployeesByDep")
-    public ResponseEntity<List<EmployeeDto>> findEmployeesByDep(@RequestParam int departmentid){
+    @GetMapping("/getEmployeesByDepartment/{idDepartment}")
+    public ResponseEntity<List<EmployeeDto>> findEmployeesByDep(@PathVariable int idDepartment){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesByDepartment");
-        List<EmployeeDto> employeesList = this.employeeService.findEmployeesByDep(departmentid);
+        List<EmployeeDto> employeesList = this.employeeService.findEmployeesByDep(idDepartment);
 
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
     }
 
-    @GetMapping("/getEmployeesByJob")
-    public ResponseEntity<List<EmployeeDto>> findEmployeesByJob(@RequestParam int jobid){
+    @GetMapping("/getEmployeesByJob/{idJob}")
+    public ResponseEntity<List<EmployeeDto>> findEmployeesByJob(@PathVariable int idJob){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesByJobCategory");
-        List<EmployeeDto> employeesList = this.employeeService.findEmployeesByJob(jobid);
+        List<EmployeeDto> employeesList = this.employeeService.findEmployeesByJob(idJob);
 
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
     }
 
-    @GetMapping("/getEmployeesDTOByDepAndJob/{departmentId}/{jobCategoryId}")
+    @GetMapping("/getEmployeesByDepartmentAndJob/{departmentId}/{jobCategoryId}")
     public ResponseEntity<List<EmployeeDto>> findEmployeesByDepAndJob(@PathVariable int departmentId,
                                                                       @PathVariable int jobCategoryId){
         HttpHeaders httpHeaders = new HttpHeaders();

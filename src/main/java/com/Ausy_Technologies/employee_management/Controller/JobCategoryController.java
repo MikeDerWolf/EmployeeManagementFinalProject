@@ -6,6 +6,7 @@ import com.Ausy_Technologies.employee_management.Model.DAO.JobCategory;
 import com.Ausy_Technologies.employee_management.RestErrorHandling.CustomException;
 import com.Ausy_Technologies.employee_management.Service.JobCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,8 @@ public class JobCategoryController {
     }
 
 
-    @GetMapping("/findJobCategory")
-    public ResponseEntity<JobCategory> findJobCategoryById(@RequestParam int id)
+    @GetMapping("/getJobCategoryById/{id}")
+    public ResponseEntity<JobCategory> findJobCategoryById(@PathVariable int id)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findJobCategory");
@@ -59,8 +60,8 @@ public class JobCategoryController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
     }
 
-    @DeleteMapping("/deleteJobCategory")
-    public ResponseEntity<String> deleteJobCategory(@RequestParam int id){
+    @DeleteMapping("/deleteJobCategory/{id}")
+    public ResponseEntity<String> deleteJobCategory(@PathVariable int id){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "deleteJobCategory");
@@ -73,8 +74,8 @@ public class JobCategoryController {
     }
 
 
-    @PutMapping("updateJobCategory")
-    public ResponseEntity<JobCategory> updateJobCategory(@RequestParam int id, @RequestParam String name){
+    @PutMapping("/updateJobCategory/{id}/{name}")
+    public ResponseEntity<JobCategory> updateJobCategory(@PathVariable int id, @PathVariable String name){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "updateJobCategory");
