@@ -229,6 +229,30 @@ public class EmployeeService {
         return this.employeeRepository.save(existingEmployee);
     }
 
+    public Employee updateEmployee2(int idEmployee, int idDepartment, int idJobCategory){
+        if(!this.employeeRepository.findById(idEmployee).isPresent()){
+            CustomException customException = new CustomException(HttpStatus.NOT_FOUND, "Employee not found!");
+            CustomException.DisplayException(customException, Level.WARNING);
+            throw customException;
+        }
+        if(!this.departmentRepository.findById(idDepartment).isPresent()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Department doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        if(!this.jobCategoryRepository.findById(idJobCategory).isPresent()){
+            CustomException customException = new CustomException(HttpStatus.BAD_REQUEST, "Job category doesn't exist!");
+            CustomException.DisplayException(customException, Level.SEVERE);
+            throw customException;
+        }
+        Employee existingEmployee = this.employeeRepository.findById(idEmployee).get();
+        Department existingDepartment = this.departmentRepository.findById(idDepartment).get();
+        JobCategory existingJobCategory = this.jobCategoryRepository.findById(idJobCategory).get();
+        existingEmployee.setDepartment(existingDepartment);
+        existingEmployee.setJobCategory(existingJobCategory);
+        return this.employeeRepository.save(existingEmployee);
+    }
+
     public Employee updateEmployee(Employee employee, int id){
 
         Optional<Employee> optionalEmployee = this.employeeRepository.findById(id);

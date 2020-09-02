@@ -29,16 +29,17 @@ public class DepartmentController {
     }
 
 
-    @GetMapping("/findDepartment")
-    public ResponseEntity<Department> findDepartmentById(@RequestParam int id)
+    @GetMapping("/getDepartmentById/{id}")
+    public ResponseEntity<Department> findDepartmentById(@PathVariable int id)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findDepartment");
+        Department department = this.departmentService.findDepartmentById(id);
 
-        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.departmentService.findDepartmentById(id));
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(department);
     }
 
-    @GetMapping("/findAllDepartments")
+    @GetMapping("/getAllDepartments")
     public ResponseEntity<List<Department>> findAllDepartments()
     {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -48,8 +49,8 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(departmentsList);
     }
 
-    @GetMapping("/listEmployeesInDepartment")
-    public ResponseEntity<List<Employee>> listEmployeesInDepartment(@RequestParam int idDepartment)
+    @GetMapping("/listEmployeesInDepartment/{idDepartment}")
+    public ResponseEntity<List<Employee>> listEmployeesInDepartment(@PathVariable int idDepartment)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesInDepartment");
@@ -58,8 +59,8 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
     }
 
-    @DeleteMapping("/deleteDepartment")
-    public ResponseEntity<String> deleteDepartment(@RequestParam int id){
+    @DeleteMapping("/deleteDepartment/{id}")
+    public ResponseEntity<String> deleteDepartment(@PathVariable int id){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "deleteDepartment");
@@ -72,8 +73,8 @@ public class DepartmentController {
     }
 
 
-    @PutMapping("/updateDepartment")
-    public ResponseEntity<Department> updateDepartment(@RequestParam int id, @RequestParam String name){
+    @PutMapping("/updateDepartment/{id}/{name}")
+    public ResponseEntity<Department> updateDepartment(@PathVariable int id, @PathVariable String name){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "updateDepartment");
