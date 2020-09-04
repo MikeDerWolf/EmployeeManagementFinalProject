@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/jobcategories")
+@CrossOrigin(origins = "*")
 public class JobCategoryController {
 
     @Autowired

@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
+@CrossOrigin(origins = "*")
 public class EmployeeController {
 
     @Autowired
@@ -94,12 +95,13 @@ public class EmployeeController {
     }
 
     @PutMapping("updateEmployee/{idEmployee}/{idDepartment}/{idJobCategory}")
-    public ResponseEntity<Employee> updateEmployee2(@PathVariable int idEmployee, @PathVariable int idDepartment,
+    public ResponseEntity<Employee> updateEmployee2(@RequestBody Employee employee,
+                                                    @PathVariable int idEmployee, @PathVariable int idDepartment,
                                                     @PathVariable int idJobCategory){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "updateEmployeeDepartmentAndJob");
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(this.employeeService.
-                updateEmployee2(idEmployee, idDepartment, idJobCategory));
+                updateEmployee2(employee, idEmployee, idDepartment, idJobCategory));
     }
 
     @PutMapping("updateEmployee/{id}")
@@ -155,6 +157,24 @@ public class EmployeeController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesByDepartmentAndJob");
         List<EmployeeDto> employeesList = this.employeeService.findEmployeesByDepAndJob(departmentId, jobCategoryId);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
+    }
+
+    @GetMapping("/getEmployeesOrderBySalary")
+    public ResponseEntity<List<EmployeeDto>> getEmployeesOrderBySalary(){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "findEmployeesByJobCategory");
+        List<EmployeeDto> employeesList = this.employeeService.findEmployeesOrderBySalary();
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
+    }
+
+    @GetMapping("/getEmployeesOrderByLastName")
+    public ResponseEntity<List<EmployeeDto>> getEmployeesOrderByLastName(){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "findEmployeesByJobCategory");
+        List<EmployeeDto> employeesList = this.employeeService.findEmployeesOrderByLastName();
 
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeesList);
     }

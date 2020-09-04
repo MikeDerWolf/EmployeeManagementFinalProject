@@ -2,6 +2,9 @@ package com.Ausy_Technologies.employee_management;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class EmployeeManagementApplication {
@@ -10,4 +13,14 @@ public class EmployeeManagementApplication {
 		SpringApplication.run(EmployeeManagementApplication.class, args);
 	}
 
+	@Bean
+	public WebMvcConfigurer configure() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/*").allowedOrigins("*");
+			}
+
+		};
+	}
 }
