@@ -1,0 +1,85 @@
+==== Employee Management Documentation
+== Departments
+
+=== addDepartment
+
+==== Request
+include::{snippets}/addShouldReturnDepartment/http-request.adoc[]
+
+===== Request body
+include::{snippets}/addShouldReturnDepartment/request-body.adoc[]
+
+===== Request fields
+include::{snippets}/addShouldReturnDepartment/request-fields.adoc[]
+
+==== Response
+include::{snippets}/addShouldReturnDepartment/http-response.adoc[]
+
+===== Response body
+include::{snippets}/addShouldReturnDepartment/response-body.adoc[]
+
+===== Response fields
+include::{snippets}/addShouldReturnDepartment/response-fields.adoc[]
+
+
+=== getDepartmentById
+
+==== Request
+include::{snippets}/getShouldReturnDepartment/http-request.adoc[]
+
+===== Path parameters
+include::{snippets}/getShouldReturnDepartment/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/getShouldReturnDepartment/http-response.adoc[]
+
+===== Response body
+include::{snippets}/getShouldReturnDepartment/response-body.adoc[]
+
+===== Response fields
+include::{snippets}/getShouldReturnDepartment/response-fields.adoc[]
+
+
+=== getAllDepartments
+
+==== Request
+include::{snippets}/getAllShouldReturnDepartments/http-request.adoc[]
+
+==== Response
+include::{snippets}/getAllShouldReturnDepartments/http-response.adoc[]
+
+===== Response body
+include::{snippets}/getAllShouldReturnDepartments/response-body.adoc[]
+
+===== Response fields
+include::{snippets}/getAllShouldReturnDepartments/response-fields.adoc[]
+
+
+=== deleteDepartment
+
+==== Request
+include::{snippets}/deleteShouldReturnMessage/http-request.adoc[]
+
+===== Path parameters
+include::{snippets}/deleteShouldReturnMessage/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/deleteShouldReturnMessage/http-response.adoc[]
+
+===== Response body
+include::{snippets}/deleteShouldReturnMessage/response-body.adoc[]
+
+
+=== updateDepartment
+
+==== Request
+include::{snippets}/updateShouldReturnDepartment/http-request.adoc[]
+
+===== Path parameters
+include::{snippets}/updateShouldReturnDepartment/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/updateShouldReturnDepartment/http-response.adoc[]
+
+===== Response body
+include::{snippets}/updateShouldReturnDepartment/response-body.adoc[]
