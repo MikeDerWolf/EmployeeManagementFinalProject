@@ -83,3 +83,90 @@ include::{snippets}/updateShouldReturnDepartment/http-response.adoc[]
 
 ===== Response body
 include::{snippets}/updateShouldReturnDepartment/response-body.adoc[]
+
+
+
+== JobCategory
+
+=== addJobCategory
+
+==== Request
+include::{snippets}/addShouldReturnJobCategory/http-request.adoc[]
+
+===== Request body
+include::{snippets}/addShouldReturnJobCategory/request-body.adoc[]
+
+===== Request fields
+include::{snippets}/addShouldReturnJobCategory/request-fields.adoc[]
+
+==== Response
+include::{snippets}/addShouldReturnJobCategory/http-response.adoc[]
+
+===== Response body
+include::{snippets}/addShouldReturnJobCategory/response-body.adoc[]
+
+===== Response fields
+include::{snippets}/addShouldReturnJobCategory/response-fields.adoc[]
+
+
+=== getDepartmentById
+
+==== Request
+include::{snippets}/getShouldReturnJobCategory/http-request.adoc[]
+
+===== Path parameters
+include::{snippets}/getShouldReturnJobCategory/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/getShouldReturnJobCategory/http-response.adoc[]
+
+===== Response body
+include::{snippets}/getShouldReturnJobCategory/response-body.adoc[]
+
+===== Response fields
+include::{snippets}/getShouldReturnJobCategory/response-fields.adoc[]
+
+
+=== getAllDepartments
+
+==== Request
+include::{snippets}/getAllShouldReturnJobCategories/http-request.adoc[]
+
+==== Response
+include::{snippets}/getAllShouldReturnJobCategories/http-response.adoc[]
+
+===== Response body
+include::{snippets}/getAllShouldReturnJobCategories/response-body.adoc[]
+
+===== Response fields
+include::{snippets}/getAllShouldReturnJobCategories/response-fields.adoc[]
+
+
+=== deleteDepartment
+
+==== Request
+include::{snippets}/deleteJobCategoryShouldReturnMessage/http-request.adoc[]
+
+===== Path parameters
+include::{snippets}/deleteJobCategoryShouldReturnMessage/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/deleteJobCategoryShouldReturnMessage/http-response.adoc[]
+
+===== Response body
+include::{snippets}/deleteJobCategoryShouldReturnMessage/response-body.adoc[]
+
+
+=== updateDepartment
+
+==== Request
+include::{snippets}/updateShouldReturnJobCategory/http-request.adoc[]
+
+===== Path parameters
+include::{snippets}/updateShouldReturnJobCategory/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/updateShouldReturnJobCategory/http-response.adoc[]
+
+===== Response body
+include::{snippets}/updateShouldReturnJobCategory/response-body.adoc[]

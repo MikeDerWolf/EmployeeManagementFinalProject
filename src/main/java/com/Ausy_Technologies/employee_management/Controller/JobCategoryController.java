@@ -38,7 +38,7 @@ public class JobCategoryController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findJobCategory");
 
-        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(this.jobCategoryService.findJobCategoryById(id));
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(this.jobCategoryService.findJobCategoryById(id));
     }
 
     @GetMapping("/getAllJobCategories")
