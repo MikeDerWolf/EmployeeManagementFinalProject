@@ -2,6 +2,8 @@ package com.Ausy_Technologies.employee_management.Model.DAO;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.List;
